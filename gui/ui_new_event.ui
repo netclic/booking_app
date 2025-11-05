@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>NewEventForm</class>
+ <widget class="QWidget" name="NewEventForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>500</width>
+    <height>450</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Nouveau Évènement</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label_title">
+     <property name="text">
+      <string>Créer un nouvel évènement</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <!-- Client ID -->
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_client">
+       <property name="text">
+        <string>Client :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="comboBox_client"/>
+     </item>
+     <!-- Logement ID -->
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_logement">
+       <property name="text">
+        <string>Logement :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="comboBox_logement"/>
+     </item>
+     <!-- Statut -->
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_status">
+       <property name="text">
+        <string>Statut :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QComboBox" name="comboBox_statut">
+       <item>
+        <property name="text">
+         <string>Demande</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>En attente</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Confirmée</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Annulée</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <!-- Date Début -->
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_date_debut">
+       <property name="text">
+        <string>Date Début :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QDateEdit" name="dateEdit_debut">
+       <property name="calendarPopup">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <!-- Date Fin -->
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_date_fin">
+       <property name="text">
+        <string>Date Fin :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QDateEdit" name="dateEdit_fin">
+       <property name="calendarPopup">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <!-- Description -->
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_description">
+       <property name="text">
+        <string>Description :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QTextEdit" name="textEdit_description"/>
+     </item>
+     <!-- Nombre d'Adultes -->
+     <item row="6" column="0">
+      <widget class="QLabel" name="label_adultes">
+       <property name="text">
+        <string>Nombre d'Adultes :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QSpinBox" name="spinBox_adultes"/>
+     </item>
+     <!-- Nombre d'Enfants -->
+     <item row="7" column="0">
+      <widget class="QLabel" name="label_enfants">
+       <property name="text">
+        <string>Nombre d'Enfants :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QSpinBox" name="spinBox_enfants"/>
+     </item>
+     <!-- Type -->
+     <item row="8" column="0">
+      <widget class="QLabel" name="label_type">
+       <property name="text">
+        <string>Type :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="1">
+      <widget class="QComboBox" name="comboBox_type">
+       <item>
+        <property name="text">
+         <string>Fermeture</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Réservation</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_buttons">
+     <item>
+      <widget class="QPushButton" name="button_save">
+       <property name="text">
+        <string>Sauvegarder</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="button_cancel">
+       <property name="text">
+        <string>Annuler</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
