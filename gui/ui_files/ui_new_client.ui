@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <ui version="4.0">
  <class>NewClientForm</class>
  <widget class="QWidget" name="NewClientForm">
@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>400</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,16 +16,23 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label_title">
-     <property name="text">
-      <string>Créer un nouveau client</string>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+       <bold>true</bold>
+       <weight>75</weight>
+      </font>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
+     <property name="text">
+      <string>Créer un nouveau client</string>
+     </property>
     </widget>
    </item>
    <item>
-    <widget class="QFormLayout" name="formLayout">
+    <layout class="QFormLayout" name="formLayout">
      <item row="0" column="0">
       <widget class="QLabel" name="label_nom">
        <property name="text">
@@ -76,7 +83,37 @@
      <item row="4" column="1">
       <widget class="QTextEdit" name="input_adresse"/>
      </item>
-    </widget>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_code_postal">
+       <property name="text">
+        <string>Code Postal :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QLineEdit" name="input_code_postal"/>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="label_ville">
+       <property name="text">
+        <string>Ville :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QLineEdit" name="input_ville"/>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="label_adresse_complement">
+       <property name="text">
+        <string>Complément Adresse :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QTextEdit" name="input_adresse_complement"/>
+     </item>
+    </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">

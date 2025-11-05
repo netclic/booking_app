@@ -1,0 +1,111 @@
+# -*- coding: utf-8 -*-
+
+################################################################################
+## Form generated from reading UI file 'ui_new_client.ui'
+##
+## Created by: Qt User Interface Compiler version 6.10.0
+##
+## WARNING! All changes made in this file will be lost when recompiling UI file!
+################################################################################
+
+from PySide6.QtCore import (QCoreApplication, QMetaObject, QObject, QPoint, QRect,
+                            QSize, Qt)
+from PySide6.QtGui import (QFont)
+from PySide6.QtWidgets import (QApplication, QFormLayout, QHBoxLayout, QLabel,
+                               QLineEdit, QMessageBox, QPushButton, QVBoxLayout,
+                               QWidget, QTextEdit)
+
+
+class Ui_NewClientForm(object):
+    def setupUi(self, NewClientForm):
+        if not NewClientForm.objectName():
+            NewClientForm.setObjectName("NewClientForm")
+        NewClientForm.resize(400, 400)
+        self.verticalLayout = QVBoxLayout(NewClientForm)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.label_title = QLabel(NewClientForm)
+        self.label_title.setObjectName("label_title")
+        font = QFont()
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(QFont.Weight.Bold)
+        self.label_title.setFont(font)
+        self.label_title.setAlignment(Qt.AlignCenter)
+        self.verticalLayout.addWidget(self.label_title)
+        self.formLayout = QFormLayout()
+        self.formLayout.setObjectName("formLayout")
+        self.label_nom = QLabel(NewClientForm)
+        self.label_nom.setObjectName("label_nom")
+        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.label_nom)
+        self.input_nom = QLineEdit(NewClientForm)
+        self.input_nom.setObjectName("input_nom")
+        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.input_nom)
+        self.label_prenom = QLabel(NewClientForm)
+        self.label_prenom.setObjectName("label_prenom")
+        self.formLayout.setWidget(1, QFormLayout.LabelRole, self.label_prenom)
+        self.input_prenom = QLineEdit(NewClientForm)
+        self.input_prenom.setObjectName("input_prenom")
+        self.formLayout.setWidget(1, QFormLayout.FieldRole, self.input_prenom)
+        self.label_email = QLabel(NewClientForm)
+        self.label_email.setObjectName("label_email")
+        self.formLayout.setWidget(2, QFormLayout.LabelRole, self.label_email)
+        self.input_email = QLineEdit(NewClientForm)
+        self.input_email.setObjectName("input_email")
+        self.formLayout.setWidget(2, QFormLayout.FieldRole, self.input_email)
+        self.label_telephone = QLabel(NewClientForm)
+        self.label_telephone.setObjectName("label_telephone")
+        self.formLayout.setWidget(3, QFormLayout.LabelRole, self.label_telephone)
+        self.input_telephone = QLineEdit(NewClientForm)
+        self.input_telephone.setObjectName("input_telephone")
+        self.formLayout.setWidget(3, QFormLayout.FieldRole, self.input_telephone)
+        self.label_adresse = QLabel(NewClientForm)
+        self.label_adresse.setObjectName("label_adresse")
+        self.formLayout.setWidget(4, QFormLayout.LabelRole, self.label_adresse)
+        self.input_adresse = QTextEdit(NewClientForm)
+        self.input_adresse.setObjectName("input_adresse")
+        self.formLayout.setWidget(4, QFormLayout.FieldRole, self.input_adresse)
+        self.label_code_postal = QLabel(NewClientForm)
+        self.label_code_postal.setObjectName("label_code_postal")
+        self.formLayout.setWidget(5, QFormLayout.LabelRole, self.label_code_postal)
+        self.input_code_postal = QLineEdit(NewClientForm)
+        self.input_code_postal.setObjectName("input_code_postal")
+        self.formLayout.setWidget(5, QFormLayout.FieldRole, self.input_code_postal)
+        self.label_ville = QLabel(NewClientForm)
+        self.label_ville.setObjectName("label_ville")
+        self.formLayout.setWidget(6, QFormLayout.LabelRole, self.label_ville)
+        self.input_ville = QLineEdit(NewClientForm)
+        self.input_ville.setObjectName("input_ville")
+        self.formLayout.setWidget(6, QFormLayout.FieldRole, self.input_ville)
+        self.label_adresse_complement = QLabel(NewClientForm)
+        self.label_adresse_complement.setObjectName("label_adresse_complement")
+        self.formLayout.setWidget(7, QFormLayout.LabelRole, self.label_adresse_complement)
+        self.input_adresse_complement = QTextEdit(NewClientForm)
+        self.input_adresse_complement.setObjectName("input_adresse_complement")
+        self.formLayout.setWidget(7, QFormLayout.FieldRole, self.input_adresse_complement)
+        self.verticalLayout.addLayout(self.formLayout)
+        self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.button_save = QPushButton(NewClientForm)
+        self.button_save.setObjectName("button_save")
+        self.horizontalLayout.addWidget(self.button_save)
+        self.button_cancel = QPushButton(NewClientForm)
+        self.button_cancel.setObjectName("button_cancel")
+        self.horizontalLayout.addWidget(self.button_cancel)
+        self.verticalLayout.addLayout(self.horizontalLayout)
+
+        self.retranslateUi(NewClientForm)
+        QMetaObject.connectSlotsByName(NewClientForm)
+
+    def retranslateUi(self, NewClientForm):
+        NewClientForm.setWindowTitle(QCoreApplication.translate("NewClientForm", "Nouveau Client", None))
+        self.label_title.setText(QCoreApplication.translate("NewClientForm", "Créer un nouveau client", None))
+        self.label_nom.setText(QCoreApplication.translate("NewClientForm", "Nom :", None))
+        self.label_prenom.setText(QCoreApplication.translate("NewClientForm", "Prénom :", None))
+        self.label_email.setText(QCoreApplication.translate("NewClientForm", "Email :", None))
+        self.label_telephone.setText(QCoreApplication.translate("NewClientForm", "Téléphone :", None))
+        self.label_adresse.setText(QCoreApplication.translate("NewClientForm", "Adresse :", None))
+        self.label_code_postal.setText(QCoreApplication.translate("NewClientForm", "Code Postal :", None))
+        self.label_ville.setText(QCoreApplication.translate("NewClientForm", "Ville :", None))
+        self.label_adresse_complement.setText(QCoreApplication.translate("NewClientForm", "Complément Adresse :", None))
+        self.button_save.setText(QCoreApplication.translate("NewClientForm", "Sauvegarder", None))
+        self.button_cancel.setText(QCoreApplication.translate("NewClientForm", "Annuler", None))
