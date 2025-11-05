@@ -104,8 +104,8 @@
     </property>
     <addaction name="separator"/>
     <addaction name="separator"/>
-    <addaction name="actionR_sidence"/>
-    <addaction name="actionR_servation"/>
+    <addaction name="actionLogement"/>
+    <addaction name="actionEvent"/>
     <addaction name="actionClients"/>
     <addaction name="separator"/>
     <addaction name="actionQuitter"/>
@@ -118,12 +118,12 @@
     <string>Quitter</string>
    </property>
   </action>
-  <action name="actionR_sidence">
+  <action name="actionLogement">
    <property name="text">
     <string>Résidence</string>
    </property>
   </action>
-  <action name="actionR_servation">
+  <action name="actionEvent">
    <property name="text">
     <string>Réservation</string>
    </property>

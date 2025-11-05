@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PySide6.QtCore import QTranslator, QLibraryInfo
 from gui.main_gui import Ui_MainWindow
 from gui.new_event import NewEventForm
+from gui.new_logement import NewLogementForm
 from db.db_setup import setup_db
 from db.db_connection import connect_to_db
 
@@ -49,8 +50,16 @@ def main():
         main_window.new_event_window = new_event_window
         new_event_window.show()
 
+    # Ajouter une référence pour pouvoir afficher NewLogementForm dans le futur
+    def open_new_logements_form():
+        # Conserver la référence pour ne pas perdre l'objet
+        new_logement_window = NewLogementForm()
+        main_window.new_logement_window = new_logement_window
+        new_logement_window.show()
+
     # Connecter le menu "Réservations" à l'ouverture de NewEventForm
-    ui.actionR_servation.triggered.connect(open_new_event_form)
+    ui.actionEvent.triggered.connect(open_new_event_form)
+    ui.actionLogement.triggered.connect(open_new_logements_form)
 
     # Connecter le menu "Quitter" à la méthode handle_quit
     ui.actionQuitter.triggered.connect(handle_quit)

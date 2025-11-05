@@ -1,9 +1,9 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
+from PySide6.QtWidgets import QWidget, QMessageBox
 from gui.new_logement_ui import Ui_NewLogementForm
 from db.models.logements import Logement
 
 
-class NewLogementForm(QMainWindow):
+class NewLogementForm(QWidget):  # Base modifiée à QWidget
     def __init__(self):
         super().__init__()
         self.ui = Ui_NewLogementForm()
@@ -20,7 +20,7 @@ class NewLogementForm(QMainWindow):
         code_postal = self.ui.input_code_postal.text()
         ville = self.ui.input_ville.text()
         capacite = self.ui.input_capacite.value()
-        classement = self.ui.input_classement.text()  # Texte libre pour classement
+        classement = self.ui.input_classement.text()
 
         # Vérifier que les champs nécessaires sont renseignés
         if not nom or not adresse or not code_postal or not ville or not classement:
@@ -34,16 +34,10 @@ class NewLogementForm(QMainWindow):
             code_postal=code_postal,
             ville=ville,
             capacite=capacite,
-            classement=classement  # Accepte des textes
+            classement=classement,
         )
         if logement.save():
             QMessageBox.information(self, "Succès", "Le logement a été enregistré avec succès.")
             self.close()
         else:
             QMessageBox.critical(self, "Erreur", "Impossible d'enregistrer le logement.")
-
-if __name__ == "__main__":
-    app = QApplication([])
-    window = NewLogementForm()
-    window.show()
-    app.exec()
