@@ -1,3 +1,4 @@
+from PySide6.QtGui import QGuiApplication
 from PySide6.QtWidgets import QWidget, QMessageBox
 from gui.new_client_ui import Ui_NewClientForm
 from db.models.clients import Client
@@ -9,9 +10,20 @@ class NewClientForm(QWidget):
         self.ui = Ui_NewClientForm()
         self.ui.setupUi(self)
 
+        # Centrer la fenêtre sur l'écran
+        self.center_on_screen()
+
         # Connecter les boutons
         self.ui.button_save.clicked.connect(self.save_client)
         self.ui.button_cancel.clicked.connect(self.close)
+
+    def center_on_screen(self):
+        """Centrer la fenêtre sur l'écran."""
+        screen = QGuiApplication.primaryScreen().geometry()
+        window_size = self.frameGeometry()
+        x = (screen.width() - window_size.width()) // 2
+        y = (screen.height() - window_size.height()) // 2
+        self.move(x, y)
 
     def save_client(self):
         """Récupérer les données du formulaire et sauvegarder un nouveau client."""

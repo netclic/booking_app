@@ -1,3 +1,4 @@
+from PySide6.QtGui import QGuiApplication
 from PySide6.QtWidgets import QWidget, QMessageBox  # Remplace QMainWindow par QWidget
 from gui.new_event_ui import Ui_NewEventForm
 from db.models.events import Event
@@ -10,6 +11,9 @@ class NewEventForm(QWidget):  # Change la classe de base à QWidget
 
         # Configure l'UI définie via le fichier .ui
         self.ui.setupUi(self)
+
+        # Centrer la fenêtre sur l'écran
+        self.center_on_screen()
 
         # Connecter les boutons aux actions
         self.ui.button_save.clicked.connect(self.save_event)
@@ -32,6 +36,14 @@ class NewEventForm(QWidget):  # Change la classe de base à QWidget
         logements = Logement.load_all()
         for logement in logements:
             self.ui.comboBox_logement.addItem(f"{logement.id}: {logement.nom}", logement.id)
+
+    def center_on_screen(self):
+        """Centrer la fenêtre sur l'écran."""
+        screen = QGuiApplication.primaryScreen().geometry()
+        window_size = self.frameGeometry()
+        x = (screen.width() - window_size.width()) // 2
+        y = (screen.height() - window_size.height()) // 2
+        self.move(x, y)
 
     def save_event(self):
         """Sauvegarde un nouvel événement en fonction des données saisies."""

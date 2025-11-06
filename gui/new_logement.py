@@ -1,3 +1,4 @@
+from PySide6.QtGui import QGuiApplication
 from PySide6.QtWidgets import QWidget, QMessageBox
 from gui.new_logement_ui import Ui_NewLogementForm
 from db.models.logements import Logement
@@ -9,9 +10,20 @@ class NewLogementForm(QWidget):  # Base modifiée à QWidget
         self.ui = Ui_NewLogementForm()
         self.ui.setupUi(self)
 
+        # Centrer la fenêtre sur l'écran
+        self.center_on_screen()
+
         # Connecter les boutons aux actions
         self.ui.button_save.clicked.connect(self.save_logement)
         self.ui.button_cancel.clicked.connect(self.close)
+
+    def center_on_screen(self):
+        """Centrer la fenêtre sur l'écran."""
+        screen = QGuiApplication.primaryScreen().geometry()
+        window_size = self.frameGeometry()
+        x = (screen.width() - window_size.width()) // 2
+        y = (screen.height() - window_size.height()) // 2
+        self.move(x, y)
 
     def save_logement(self):
         # Récupérer les valeurs du formulaire

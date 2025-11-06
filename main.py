@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PySide6.QtCore import QTranslator, QLibraryInfo
 from gui.main_gui import Ui_MainWindow
 from gui.new_client import NewClientForm
+from PySide6.QtGui import QGuiApplication
 from gui.new_event import NewEventForm
 from gui.new_logement import NewLogementForm
 from db.db_setup import setup_db
@@ -43,6 +44,13 @@ def main():
     # Charger l'interface utilisateur
     ui = Ui_MainWindow()
     ui.setupUi(main_window)
+
+    # Centrer la fenêtre principale sur l'écran
+    screen = QGuiApplication.primaryScreen().geometry()
+    window_size = main_window.frameGeometry()
+    x = (screen.width() - window_size.width()) // 2
+    y = (screen.height() - window_size.height()) // 2
+    main_window.move(x, y)
 
     # Ajouter une référence pour pouvoir afficher NewClientForm dans le futur
     def open_new_client_form():
