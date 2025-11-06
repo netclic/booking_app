@@ -32,6 +32,81 @@ def main():
     if translator.load("translations/qtbase_fr.qm"):
         app.installTranslator(translator)
 
+    # Appliquer le thème pastel à toute l'application
+    app.setStyleSheet("""
+        QMainWindow {
+            background-color: #F8F9FA;
+        }
+
+        QPushButton {
+            background-color: #A8D8EA;
+            color: #495057;
+            border: 1px solid #E9ECEF;
+            border-radius: 5px;
+            padding: 8px 15px;
+            font-weight: 500;
+        }
+
+        QPushButton:hover {
+            background-color: #E6E6FA;
+        }
+
+        QPushButton:pressed {
+            background-color: #DDA0DD;
+        }
+
+        QLineEdit, QTextEdit {
+            background-color: #FFFFFF;
+            border: 2px solid #E9ECEF;
+            border-radius: 5px;
+            padding: 5px;
+            color: #495057;
+        }
+
+        QLineEdit:focus, QTextEdit:focus {
+            border: 2px solid #A8D8EA;
+        }
+
+        QLabel {
+            color: #495057;
+        }
+
+        QComboBox {
+            background-color: #FFFFFF;
+            border: 2px solid #E9ECEF;
+            border-radius: 5px;
+            padding: 5px;
+            color: #495057;
+        }
+
+        QComboBox:focus {
+            border: 2px solid #A8D8EA;
+        }
+
+        QComboBox::drop-down {
+            border: none;
+            background-color: #E6E6FA;
+        }
+
+        QMenuBar {
+            background-color: #A8D8EA;
+            color: #495057;
+        }
+
+        QMenuBar::item:selected {
+            background-color: #E6E6FA;
+        }
+
+        QMenu {
+            background-color: #FFFFFF;
+            border: 1px solid #E9ECEF;
+        }
+
+        QMenu::item:selected {
+            background-color: #FFB6C1;
+        }
+    """)
+
     # Connecter à la base de données
     connect_to_db()
 
