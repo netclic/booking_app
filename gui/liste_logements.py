@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QWidget, QTableWidgetItem, QHeaderView
 from PySide6.QtSql import QSqlQuery
+from PySide6.QtCore import Qt
 from gui.liste_logements_ui import Ui_ListLogementsForm
 from db.db_connection import connect_to_db
 
@@ -38,7 +39,7 @@ class ListLogementsWindow(QWidget, Ui_ListLogementsForm):
             query.prepare("""
                           SELECT id, nom, adresse, code_postal, ville, capacite, classement
                           FROM logements
-                          ORDER BY nom
+                          ORDER BY id
                           """)
 
             if not query.exec():
@@ -60,16 +61,26 @@ class ListLogementsWindow(QWidget, Ui_ListLogementsForm):
             # Configurer le tableau
             self.tableWidget.setRowCount(len(logements))
 
-            # Remplir le tableau
+            # Remplir le tableau avec alignement approprié
             for row_idx, logement in enumerate(logements):
                 for col_idx, value in enumerate(logement):
                     # Convertir None en chaîne vide
                     display_value = "" if value is None else str(value)
                     item = QTableWidgetItem(display_value)
+                    
+                    # Alignement : centré sauf pour nom (col 1) et adresse (col 2)
+                    if col_idx == 1 or col_idx == 2:  # nom et adresse
+                        item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+                    else:  # ID, code postal, ville, capacité, classement
+                        item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+                    
                     self.tableWidget.setItem(row_idx, col_idx, item)
 
             # Réactiver le tri après le remplissage
             self.tableWidget.setSortingEnabled(True)
+            
+            # Trier par ID (colonne 0) par défaut
+            self.tableWidget.sortItems(0, Qt.SortOrder.AscendingOrder)
 
             print(f"Chargé {len(logements)} logement(s)")  # Message de debug
 

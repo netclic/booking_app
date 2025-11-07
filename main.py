@@ -89,6 +89,33 @@ def main():
             background-color: #E6E6FA;
         }
 
+        QTableWidget {
+            background-color: #FFFFFF;
+            alternate-background-color: #F8F9FA;
+            selection-background-color: #B8E6F0;
+            selection-color: #2C3E50;
+            gridline-color: #E9ECEF;
+            border: 1px solid #E9ECEF;
+        }
+
+        QTableWidget::item:hover {
+            background-color: #D4F1F9;
+            color: #2C3E50;
+        }
+
+        QTableWidget::item:selected {
+            background-color: #A8D8EA;
+            color: #2C3E50;
+        }
+
+        QHeaderView::section {
+            background-color: #E6E6FA;
+            color: #495057;
+            padding: 5px;
+            border: 1px solid #D1D1E0;
+            font-weight: bold;
+        }
+
         QMenuBar {
             background-color: #A8D8EA;
             color: #495057;
