@@ -97,28 +97,27 @@ class ListEventsWindow(QWidget, Ui_ListEventsForm):
                 print("Erreur: La base de données n'est pas ouverte")
                 return
 
-            # Créer une requête SQL avec QSqlQuery avec jointures pour récupérer les noms
+            # Créer une requête SQL avec QSqlQuery
             query = QSqlQuery(db)
 
-            # Préparer et exécuter la requête - tri par ID
-            query.prepare("""
-                          SELECT 
-                              e.id,
-                              e.client_id,
-                              c.nom || ' ' || c.prenom as client_name,
-                              e.logement_id,
-                              l.nom as logement_name,
-                              e.date_debut,
-                              e.date_fin,
-                              e.prix_total,
-                              e.statut
-                          FROM events e
-                          LEFT JOIN clients c ON e.client_id = c.id
-                          LEFT JOIN logements l ON e.logement_id = l.id
-                          ORDER BY e.id DESC
-                          """)
+            # Exécuter la requête directement avec exec() et la requête SQL en paramètre
+            sql = """
+                SELECT 
+                    e.id,
+                    e.client_id,
+                    c.nom || ' ' || c.prenom as client_name,
+                    e.logement_id,
+                    l.nom as logement_name,
+                    e.date_debut,
+                    e.date_fin,
+                    e.status
+                FROM events e
+                LEFT JOIN clients c ON e.client_id = c.id
+                LEFT JOIN logements l ON e.logement_id = l.id
+                ORDER BY e.id DESC
+            """
 
-            if not query.exec():
+            if not query.exec(sql):
                 print(f"Erreur lors de l'exécution de la requête: {query.lastError().text()}")
                 return
 
@@ -129,7 +128,7 @@ class ListEventsWindow(QWidget, Ui_ListEventsForm):
             events = []
             while query.next():
                 event = []
-                for i in range(9):  # 9 colonnes
+                for i in range(8):  # 8 colonnes
                     value = query.value(i)
                     event.append(value)
                 events.append(event)

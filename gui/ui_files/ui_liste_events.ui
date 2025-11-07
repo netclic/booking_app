@@ -82,11 +82,6 @@
      </column>
      <column>
       <property name="text">
-       <string>Prix Total</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
        <string>Statut</string>
       </property>
      </column>
