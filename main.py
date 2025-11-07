@@ -9,6 +9,7 @@ from gui.new_event import NewEventForm
 from gui.new_logement import NewLogementForm
 from gui.liste_logements import ListLogementsWindow
 from gui.liste_clients import ListClientsWindow
+from gui.liste_events import ListEventsWindow
 from db.db_setup import setup_db
 from db.db_connection import connect_to_db
 
@@ -192,12 +193,20 @@ def main():
         main_window.list_clients_window = list_clients_window
         list_clients_window.show()
 
+    # Ajouter une référence pour pouvoir afficher la liste des réservations
+    def open_list_events():
+        # Conserver la référence pour ne pas perdre l'objet
+        list_events_window = ListEventsWindow()
+        main_window.list_events_window = list_events_window
+        list_events_window.show()
+
     # Connecter le menu "Réservations" à l'ouverture de NewEventForm
     ui.actionClient.triggered.connect(open_new_client_form)
     ui.actionEvent.triggered.connect(open_new_event_form)
     ui.actionLogement.triggered.connect(open_new_logements_form)
     ui.actionLogementListe.triggered.connect(open_list_logements)
     ui.actionClientListe.triggered.connect(open_list_clients)
+    ui.actionEventListe.triggered.connect(open_list_events)
 
     # Connecter le menu "Quitter" à la méthode handle_quit
     ui.actionQuitter.triggered.connect(handle_quit)
