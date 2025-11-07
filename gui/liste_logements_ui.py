@@ -57,6 +57,9 @@ class Ui_ListLogementsForm(object):
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding,
                                            QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_buttons.addItem(spacerItem)
+        self.button_delete = QtWidgets.QPushButton(ListLogementsForm)
+        self.button_delete.setObjectName("button_delete")
+        self.horizontalLayout_buttons.addWidget(self.button_delete)
         self.button_ok = QtWidgets.QPushButton(ListLogementsForm)
         self.button_ok.setObjectName("button_ok")
         self.horizontalLayout_buttons.addWidget(self.button_ok)
@@ -83,4 +86,5 @@ class Ui_ListLogementsForm(object):
         item.setText(_translate("ListLogementsForm", "Capacité"))
         item = self.tableWidget.horizontalHeaderItem(6)
         item.setText(_translate("ListLogementsForm", "Classement"))
+        self.button_delete.setText(_translate("ListLogementsForm", "Supprimer"))
         self.button_ok.setText(_translate("ListLogementsForm", "OK"))
