@@ -1,0 +1,86 @@
+# -*- coding: utf-8 -*-
+
+################################################################################
+## Form generated from reading UI file 'ui_list_logements.ui'
+##
+## Created by: Qt User Interface Compiler version 6.0.0
+##
+## WARNING! All changes made in this file will be lost when recompiling UI file!
+################################################################################
+
+from PyQt6 import QtCore, QtGui, QtWidgets
+
+
+class Ui_ListLogementsForm(object):
+    def setupUi(self, ListLogementsForm):
+        ListLogementsForm.setObjectName("ListLogementsForm")
+        ListLogementsForm.resize(800, 600)
+        self.verticalLayout = QtWidgets.QVBoxLayout(ListLogementsForm)
+        self.verticalLayout.setObjectName("verticalLayout")
+
+        self.label_title = QtWidgets.QLabel(ListLogementsForm)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_title.setFont(font)
+        self.label_title.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.label_title.setObjectName("label_title")
+        self.verticalLayout.addWidget(self.label_title)
+
+        self.tableWidget = QtWidgets.QTableWidget(ListLogementsForm)
+        self.tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.tableWidget.setAlternatingRowColors(True)
+        self.tableWidget.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
+        self.tableWidget.setSortingEnabled(True)
+        self.tableWidget.setObjectName("tableWidget")
+        self.tableWidget.setColumnCount(7)
+        self.tableWidget.setRowCount(0)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(1, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(2, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(3, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(4, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(5, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(6, item)
+        self.verticalLayout.addWidget(self.tableWidget)
+
+        self.horizontalLayout_buttons = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_buttons.setObjectName("horizontalLayout_buttons")
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding,
+                                           QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_buttons.addItem(spacerItem)
+        self.button_ok = QtWidgets.QPushButton(ListLogementsForm)
+        self.button_ok.setObjectName("button_ok")
+        self.horizontalLayout_buttons.addWidget(self.button_ok)
+        self.verticalLayout.addLayout(self.horizontalLayout_buttons)
+
+        self.retranslateUi(ListLogementsForm)
+        QtCore.QMetaObject.connectSlotsByName(ListLogementsForm)
+
+    def retranslateUi(self, ListLogementsForm):
+        _translate = QtCore.QCoreApplication.translate
+        ListLogementsForm.setWindowTitle(_translate("ListLogementsForm", "Liste des Logements"))
+        self.label_title.setText(_translate("ListLogementsForm", "Liste des Logements"))
+        item = self.tableWidget.horizontalHeaderItem(0)
+        item.setText(_translate("ListLogementsForm", "ID"))
+        item = self.tableWidget.horizontalHeaderItem(1)
+        item.setText(_translate("ListLogementsForm", "Nom"))
+        item = self.tableWidget.horizontalHeaderItem(2)
+        item.setText(_translate("ListLogementsForm", "Adresse"))
+        item = self.tableWidget.horizontalHeaderItem(3)
+        item.setText(_translate("ListLogementsForm", "Code Postal"))
+        item = self.tableWidget.horizontalHeaderItem(4)
+        item.setText(_translate("ListLogementsForm", "Ville"))
+        item = self.tableWidget.horizontalHeaderItem(5)
+        item.setText(_translate("ListLogementsForm", "Capacité"))
+        item = self.tableWidget.horizontalHeaderItem(6)
+        item.setText(_translate("ListLogementsForm", "Classement"))
+        self.button_ok.setText(_translate("ListLogementsForm", "OK"))
