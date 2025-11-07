@@ -6,6 +6,7 @@ from gui.new_client import NewClientForm
 from PySide6.QtGui import QGuiApplication
 from gui.new_event import NewEventForm
 from gui.new_logement import NewLogementForm
+from gui.liste_logements import ListLogementsWindow
 from db.db_setup import setup_db
 from db.db_connection import connect_to_db
 
@@ -148,10 +149,19 @@ def main():
         main_window.new_logement_window = new_logement_window
         new_logement_window.show()
 
+    # Ajouter une référence pour pouvoir afficher la liste des logements
+    def open_list_logements():
+        # Conserver la référence pour ne pas perdre l'objet
+        list_logements_window = ListLogementsWindow()
+        main_window.list_logements_window = list_logements_window
+        list_logements_window.show()
+
+
     # Connecter le menu "Réservations" à l'ouverture de NewEventForm
     ui.actionClient.triggered.connect(open_new_client_form)
     ui.actionEvent.triggered.connect(open_new_event_form)
     ui.actionLogement.triggered.connect(open_new_logements_form)
+    ui.actionLogementListe.triggered.connect(open_list_logements)
 
     # Connecter le menu "Quitter" à la méthode handle_quit
     ui.actionQuitter.triggered.connect(handle_quit)
