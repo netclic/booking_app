@@ -145,3 +145,23 @@ class Event:
         else:
             print(f"Erreur : Base de données non ouverte ou ID non défini dans Event.delete().")
         return False
+
+    def to_dict(self):
+        """Retourne un dictionnaire représentant l'objet Event."""
+        return {
+            "id": self.id,
+            "client_id": self.client_id,
+            "logement_id": self.logement_id,
+            "status": self.status,
+            "date_debut": self.date_debut,
+            "date_fin": self.date_fin,
+            "description": self.description,
+            "nombre_adultes": self.nombre_adultes,
+            "nombre_enfants": self.nombre_enfants,
+            "type": self.type
+        }
+
+    def to_json(self):
+        """Retourne un enregistrement JSON représentant l'objet Event."""
+        event_dict = self.to_dict()
+        return json.dumps(event_dict)

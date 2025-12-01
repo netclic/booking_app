@@ -1,3 +1,5 @@
+import json
+
 from db.db_connection import connect_to_db
 from PySide6.QtSql import QSqlQuery, QSqlError
 
@@ -15,6 +17,56 @@ class Client:
         self.code_postal = code_postal
         self.ville = ville
         self.adresse_complement = adresse_complement
+
+
+    @staticmethod
+    def delete(self, client_id):
+        """Supprime un client de la base de données."""
+        db = connect_to_db()
+        if db.isOpen() and isinstance(client_id, int):
+            query = QSqlQuery(db)
+            query.prepare("DELETE FROM clients WHERE id = :id")
+            query.bindValue(":id", client_id)
+            if query.exec():
+                print(f"Client ID={client_id} supprimé avec succès.")
+                return True
+            else:
+                print("Erreur lors de la suppression :", query.lastError().text())
+        else:
+            print(f"Erreur : Base de données non ouverte ou suivi ID non défini dans Client.delete().")
+        return False
+
+
+    @staticmethod
+    def get_by_id(client_id):
+        """Charge un client spécifique depuis la base via son ID."""
+        db = connect_to_db()
+        if db.isOpen():
+            query = QSqlQuery(db)
+            query.prepare("""
+                SELECT id, nom, email, telephone, prenom, adresse, code_postal, ville, adresse_complement 
+                FROM clients 
+                WHERE id = :id
+            """)
+            query.bindValue(":id", client_id)
+            if query.exec() and query.next():
+                return Client(
+                    id=query.value(0),
+                    nom=query.value(1),
+                    email=query.value(2),
+                    telephone=query.value(3),
+                    prenom=query.value(4),
+                    adresse=query.value(5),
+                    code_postal=query.value(6),
+                    ville=query.value(7),
+                    adresse_complement=query.value(8),
+                )
+            else:
+                print(f"Aucun client trouvé pour ID={client_id} ou erreur : {query.lastError().text()}")
+        else:
+            print("Erreur : Base de données non ouverte dans Client.get_by_id().")
+        return None
+
 
     @staticmethod
     def load_all():
@@ -47,35 +99,6 @@ class Client:
             print("Erreur : Base de données non ouverte dans Client.load_all().")
         return clients
 
-    @staticmethod
-    def get_by_id(client_id):
-        """Charge un client spécifique depuis la base via son ID."""
-        db = connect_to_db()
-        if db.isOpen():
-            query = QSqlQuery(db)
-            query.prepare("""
-                SELECT id, nom, email, telephone, prenom, adresse, code_postal, ville, adresse_complement 
-                FROM clients 
-                WHERE id = :id
-            """)
-            query.bindValue(":id", client_id)
-            if query.exec() and query.next():
-                return Client(
-                    id=query.value(0),
-                    nom=query.value(1),
-                    email=query.value(2),
-                    telephone=query.value(3),
-                    prenom=query.value(4),
-                    adresse=query.value(5),
-                    code_postal=query.value(6),
-                    ville=query.value(7),
-                    adresse_complement=query.value(8),
-                )
-            else:
-                print(f"Aucun client trouvé pour ID={client_id} ou erreur : {query.lastError().text()}")
-        else:
-            print("Erreur : Base de données non ouverte dans Client.get_by_id().")
-        return None
 
     def save(self):
         """Enregistre ou met à jour un client dans la base de données."""
@@ -116,18 +139,24 @@ class Client:
             print("Erreur : Base de données non ouverte dans Client.save().")
         return False
 
-    def delete(self):
-        """Supprime un client de la base de données."""
-        db = connect_to_db()
-        if db.isOpen() and self.id:
-            query = QSqlQuery(db)
-            query.prepare("DELETE FROM clients WHERE id = :id")
-            query.bindValue(":id", self.id)
-            if query.exec():
-                print(f"Client ID={self.id} supprimé avec succès.")
-                return True
-            else:
-                print("Erreur lors de la suppression :", query.lastError().text())
-        else:
-            print(f"Erreur : Base de données non ouverte ou suivi ID non défini dans Client.delete().")
-        return False
+
+    def to_dict(self):
+        """Retourne un dictionnaire représentant l'objet Client."""
+        return {
+            "id": self.id,
+            "nom": self.nom,
+            "prenom": self.prenom,
+            "email": self.email,
+            "telephone": self.telephone,
+            "adresse": self.adresse,
+            "code_postal": self.code_postal,
+            "ville": self.ville,
+            "adresse_complement": self.adresse_complement,
+            # Exclure adresse_complement pour l'exemple
+        }
+
+
+    def to_json(self):
+        """Retourne un enregistrement JSON représentant l'objet Client."""
+        client_dict = self.to_dict()
+        return json.dumps(client_dict)

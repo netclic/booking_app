@@ -115,3 +115,20 @@ class Logement:
         else:
             print(f"Erreur : Base de données non ouverte ou suivi ID non défini dans Logement.delete().")
         return False
+
+    def to_dict(self):
+        """Retourne un dictionnaire représentant l'objet Logement."""
+        return {
+            "id": self.id,
+            "nom": self.nom,
+            "adresse": self.adresse,
+            "code_postal": self.code_postal,
+            "ville": self.ville,
+            "capacite": self.capacite,
+            "classement": self.classement
+        }
+
+    def to_json(self):
+        """Retourne un enregistrement JSON représentant l'objet Logement."""
+        logement_dict = self.to_dict()
+        return json.dumps(logement_dict)
