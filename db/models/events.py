@@ -1,3 +1,5 @@
+import json
+
 from db.db_connection import connect_to_db
 from PySide6.QtSql import QSqlQuery, QSqlError
 
@@ -20,6 +22,54 @@ class Event:
         self.nombre_adultes = nombre_adultes
         self.nombre_enfants = nombre_enfants
         self.type = type
+
+    def delete(self):
+        """Supprime un événement de la base de données."""
+        db = connect_to_db()
+        if db.isOpen() and self.id:
+            query = QSqlQuery(db)
+            query.prepare("DELETE FROM events WHERE id = :id")
+            query.bindValue(":id", self.id)
+            if query.exec():
+                print(f"Événement ID={self.id} supprimé avec succès.")
+                return True
+            else:
+                print("Erreur lors de la suppression :", query.lastError().text())
+        else:
+            print(f"Erreur : Base de données non ouverte ou ID non défini dans Event.delete().")
+        return False
+
+    @staticmethod
+    def get_by_id(event_id):
+        """Charge un événement spécifique en fonction de son ID."""
+        db = connect_to_db()
+        if db.isOpen():
+            query = QSqlQuery(db)
+            query.prepare("""
+                SELECT id, client_id, logement_id, status, date_debut, 
+                       date_fin, description, nombre_adultes, nombre_enfants, type
+                FROM events
+                WHERE id = :id
+            """)
+            query.bindValue(":id", event_id)
+            if query.exec() and query.next():
+                return Event(
+                    id=query.value(0),
+                    client_id=query.value(1),
+                    logement_id=query.value(2),
+                    status=query.value(3),
+                    date_debut=query.value(4),
+                    date_fin=query.value(5),
+                    description=query.value(6),
+                    nombre_adultes=query.value(7),
+                    nombre_enfants=query.value(8),
+                    type=query.value(9),
+                )
+            else:
+                print(f"Aucun événement trouvé pour ID={event_id} ou erreur : {query.lastError().text()}")
+        else:
+            print("Erreur : Base de données non ouverte dans Event.get_by_id().")
+        return None
 
     @staticmethod
     def load_all():
@@ -53,38 +103,6 @@ class Event:
         else:
             print("Erreur : Base de données non ouverte dans Event.load_all().")
         return events
-
-    @staticmethod
-    def get_by_id(event_id):
-        """Charge un événement spécifique en fonction de son ID."""
-        db = connect_to_db()
-        if db.isOpen():
-            query = QSqlQuery(db)
-            query.prepare("""
-                SELECT id, client_id, logement_id, status, date_debut, 
-                       date_fin, description, nombre_adultes, nombre_enfants, type
-                FROM events
-                WHERE id = :id
-            """)
-            query.bindValue(":id", event_id)
-            if query.exec() and query.next():
-                return Event(
-                    id=query.value(0),
-                    client_id=query.value(1),
-                    logement_id=query.value(2),
-                    status=query.value(3),
-                    date_debut=query.value(4),
-                    date_fin=query.value(5),
-                    description=query.value(6),
-                    nombre_adultes=query.value(7),
-                    nombre_enfants=query.value(8),
-                    type=query.value(9),
-                )
-            else:
-                print(f"Aucun événement trouvé pour ID={event_id} ou erreur : {query.lastError().text()}")
-        else:
-            print("Erreur : Base de données non ouverte dans Event.get_by_id().")
-        return None
 
     def save(self):
         """Enregistre ou met à jour un événement dans la base de données."""
@@ -128,22 +146,6 @@ class Event:
                 print("Erreur lors de l'enregistrement de l'événement :", query.lastError().text())
         else:
             print("Erreur : Base de données non ouverte dans Event.save().")
-        return False
-
-    def delete(self):
-        """Supprime un événement de la base de données."""
-        db = connect_to_db()
-        if db.isOpen() and self.id:
-            query = QSqlQuery(db)
-            query.prepare("DELETE FROM events WHERE id = :id")
-            query.bindValue(":id", self.id)
-            if query.exec():
-                print(f"Événement ID={self.id} supprimé avec succès.")
-                return True
-            else:
-                print("Erreur lors de la suppression :", query.lastError().text())
-        else:
-            print(f"Erreur : Base de données non ouverte ou ID non défini dans Event.delete().")
         return False
 
     def to_dict(self):

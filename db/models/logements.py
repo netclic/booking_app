@@ -1,3 +1,5 @@
+import json
+
 from db.db_connection import connect_to_db
 from PySide6.QtSql import QSqlQuery, QSqlError
 
@@ -13,6 +15,46 @@ class Logement:
         self.ville = ville
         self.capacite = capacite
         self.classement = classement
+
+    def delete(self):
+        """Supprime un logement de la base de données."""
+        db = connect_to_db()
+        if db.isOpen() and self.id:
+            query = QSqlQuery(db)
+            query.prepare("DELETE FROM logements WHERE id = :id")
+            query.bindValue(":id", self.id)
+            if query.exec():
+                print(f"Logement ID={self.id} supprimé avec succès.")
+                return True
+            else:
+                print("Erreur lors de la suppression :", query.lastError().text())
+        else:
+            print(f"Erreur : Base de données non ouverte ou suivi ID non défini dans Logement.delete().")
+        return False
+
+    @staticmethod
+    def get_by_id(logement_id):
+        """Charge un logement spécifique depuis la base via son ID."""
+        db = connect_to_db()
+        if db.isOpen():
+            query = QSqlQuery(db)
+            query.prepare("SELECT id, nom, adresse, code_postal, ville, capacite, classement FROM logements WHERE id = :id")
+            query.bindValue(":id", logement_id)
+            if query.exec() and query.next():
+                return Logement(
+                    id=query.value(0),
+                    nom=query.value(1),
+                    adresse=query.value(2),
+                    code_postal=query.value(3),
+                    ville=query.value(4),
+                    capacite=query.value(5),
+                    classement=query.value(6),
+                )
+            else:
+                print(f"Aucun logement trouvé pour ID={logement_id} ou erreur : {query.lastError().text()}")
+        else:
+            print("Erreur : Base de données non ouverte dans Logement.get_by_id().")
+        return None
 
     @staticmethod
     def load_all():
@@ -39,30 +81,6 @@ class Logement:
         else:
             print("Erreur : Base de données non ouverte dans Logement.load_all().")
         return logements
-
-    @staticmethod
-    def get_by_id(logement_id):
-        """Charge un logement spécifique depuis la base via son ID."""
-        db = connect_to_db()
-        if db.isOpen():
-            query = QSqlQuery(db)
-            query.prepare("SELECT id, nom, adresse, code_postal, ville, capacite, classement FROM logements WHERE id = :id")
-            query.bindValue(":id", logement_id)
-            if query.exec() and query.next():
-                return Logement(
-                    id=query.value(0),
-                    nom=query.value(1),
-                    adresse=query.value(2),
-                    code_postal=query.value(3),
-                    ville=query.value(4),
-                    capacite=query.value(5),
-                    classement=query.value(6),
-                )
-            else:
-                print(f"Aucun logement trouvé pour ID={logement_id} ou erreur : {query.lastError().text()}")
-        else:
-            print("Erreur : Base de données non ouverte dans Logement.get_by_id().")
-        return None
 
     def save(self):
         """Enregistre ou met à jour un logement dans la base de données."""
@@ -98,22 +116,6 @@ class Logement:
                 print("Erreur lors de l'enregistrement du logement :", query.lastError().text())
         else:
             print("Erreur : Base de données non ouverte dans Logement.save().")
-        return False
-
-    def delete(self):
-        """Supprime un logement de la base de données."""
-        db = connect_to_db()
-        if db.isOpen() and self.id:
-            query = QSqlQuery(db)
-            query.prepare("DELETE FROM logements WHERE id = :id")
-            query.bindValue(":id", self.id)
-            if query.exec():
-                print(f"Logement ID={self.id} supprimé avec succès.")
-                return True
-            else:
-                print("Erreur lors de la suppression :", query.lastError().text())
-        else:
-            print(f"Erreur : Base de données non ouverte ou suivi ID non défini dans Logement.delete().")
         return False
 
     def to_dict(self):
