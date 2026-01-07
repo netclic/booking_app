@@ -31,6 +31,7 @@ class ListClientsWindow(QWidget, Ui_ListClientsForm):
         """Supprime le client sélectionné après confirmation"""
         # Vérifier qu'une ligne est sélectionnée
         selected_rows = self.tableWidget.selectionModel().selectedRows()
+
         if not selected_rows:
             QMessageBox.warning(
                 self,
@@ -38,6 +39,7 @@ class ListClientsWindow(QWidget, Ui_ListClientsForm):
                 "Veuillez sélectionner un client à supprimer."
             )
             return
+
         # Récupérer l'ID, le nom et le prénom du client sélectionné
         row = selected_rows[0].row()
         client_id = self.tableWidget.item(row, 0).text()
@@ -56,9 +58,11 @@ class ListClientsWindow(QWidget, Ui_ListClientsForm):
             QMessageBox.StandardButton.No
         )
         if reply == QMessageBox.StandardButton.Yes:
+
             try:
                 # Supprimer le client via la méthode delete de la classe Client
                 self.client.delete(int(client_id))
+
                 # Supprimer la ligne du tableau
                 self.tableWidget.removeRow(row)
                 QMessageBox.information(
@@ -70,7 +74,7 @@ class ListClientsWindow(QWidget, Ui_ListClientsForm):
                 QMessageBox.critical(
                     self,
                     "Erreur de suppression",
-                    f"Erreur lors de la suppression : {str(e)}"
+                    f"Une erreur s'est produite lors de la suppression : {str(e)}"
                 )
 
     def load_clients(self):

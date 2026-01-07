@@ -23,15 +23,16 @@ class Event:
         self.nombre_enfants = nombre_enfants
         self.type = type
 
-    def delete(self):
+    @staticmethod
+    def delete(event_id):
         """Supprime un événement de la base de données."""
         db = connect_to_db()
-        if db.isOpen() and self.id:
+        if db.isOpen() and isinstance(event_id, int):
             query = QSqlQuery(db)
             query.prepare("DELETE FROM events WHERE id = :id")
-            query.bindValue(":id", self.id)
+            query.bindValue(":id", event_id)
             if query.exec():
-                print(f"Événement ID={self.id} supprimé avec succès.")
+                print(f"Événement ID={event_id} supprimé avec succès.")
                 return True
             else:
                 print("Erreur lors de la suppression :", query.lastError().text())

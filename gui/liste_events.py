@@ -1,8 +1,10 @@
+from db.db_connection import connect_to_db
+from db.models.events import Event
+from db.models.logements import Logement
+from gui.liste_events_ui import Ui_ListEventsForm
 from PySide6.QtWidgets import QWidget, QTableWidgetItem, QHeaderView, QMessageBox
 from PySide6.QtSql import QSqlQuery
 from PySide6.QtCore import Qt
-from gui.liste_events_ui import Ui_ListEventsForm
-from db.db_connection import connect_to_db
 
 
 class ListEventsWindow(QWidget, Ui_ListEventsForm):
@@ -10,11 +12,15 @@ class ListEventsWindow(QWidget, Ui_ListEventsForm):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.events = None
         self.setupUi(self)
 
         # Connecter les boutons
         self.button_ok.clicked.connect(self.close)
         self.button_delete.clicked.connect(self.delete_selected_event)
+
+        # Créer une instance de la classe Client
+        self.event = Event()
 
         # Charger les données
         self.load_events()
@@ -61,30 +67,21 @@ class ListEventsWindow(QWidget, Ui_ListEventsForm):
         if reply == QMessageBox.StandardButton.Yes:
             # Supprimer de la base de données
             try:
-                db = connect_to_db()
-                query = QSqlQuery(db)
-                query.prepare("DELETE FROM events WHERE id = ?")
-                query.addBindValue(int(event_id))
+                # Supprimer le client via la méthode delete de la classe Client
+                self.event.delete(int(event_id))
 
-                if query.exec():
-                    # Supprimer la ligne du tableau
-                    self.tableWidget.removeRow(row)
-                    QMessageBox.information(
-                        self,
-                        "Suppression réussie",
-                        f"La réservation pour '{client_name}' a été supprimée avec succès."
-                    )
-                else:
-                    QMessageBox.critical(
-                        self,
-                        "Erreur de suppression",
-                        f"Erreur lors de la suppression : {query.lastError().text()}"
-                    )
+                # Supprimer la ligne du tableau
+                self.tableWidget.removeRow(row)
+                QMessageBox.information(
+                    self,
+                    "Suppression réussie",
+                    f"La réservation pour '{client_name}' a été supprimée avec succès."
+                )
             except Exception as e:
                 QMessageBox.critical(
                     self,
-                    "Erreur",
-                    f"Une erreur s'est produite : {str(e)}"
+                    "Erreur de suppression",
+                    f"Une erreur s'est produite lors de la suppression : {str(e)}"
                 )
 
     def load_events(self):
@@ -92,72 +89,43 @@ class ListEventsWindow(QWidget, Ui_ListEventsForm):
         try:
             # Connexion avec QSqlDatabase
             db = connect_to_db()
-
             if not db.isOpen():
                 print("Erreur: La base de données n'est pas ouverte")
                 return
 
-            # Créer une requête SQL avec QSqlQuery
-            query = QSqlQuery(db)
+            self.events = Event().load_all()
 
-            # Exécuter la requête directement avec exec() et la requête SQL en paramètre
-            sql = """
-                SELECT 
-                    e.id,
-                    e.client_id,
-                    c.nom || ' ' || c.prenom as client_name,
-                    e.logement_id,
-                    l.nom as logement_name,
-                    e.date_debut,
-                    e.date_fin,
-                    e.status
-                FROM events e
-                LEFT JOIN clients c ON e.client_id = c.id
-                LEFT JOIN logements l ON e.logement_id = l.id
-                ORDER BY e.id DESC
-            """
-
-            if not query.exec(sql):
-                print(f"Erreur lors de l'exécution de la requête: {query.lastError().text()}")
+            if not self.events:
+                print("Aucun client trouvé.")
                 return
 
-            # Désactiver le tri pendant le remplissage
+           # Désactiver le tri pendant le remplissage
             self.tableWidget.setSortingEnabled(False)
 
-            # Récupérer les résultats et remplir le tableau
-            events = []
-            while query.next():
-                event = []
-                for i in range(8):  # 8 colonnes
-                    value = query.value(i)
-                    event.append(value)
-                events.append(event)
-
             # Configurer le tableau
-            self.tableWidget.setRowCount(len(events))
+            self.tableWidget.setRowCount(len(self.events))
 
             # Remplir le tableau avec alignement approprié
-            for row_idx, event in enumerate(events):
-                for col_idx, value in enumerate(event):
+            for row_idx, event in enumerate(self.events):
+                for col_idx, value in enumerate(
+                        [event.id, event.client_id, event.nom, event.logement_id, event.logement_name, event.date_debut,
+                         event.date_fin]):
                     # Convertir None en chaîne vide
                     display_value = "" if value is None else str(value)
                     item = QTableWidgetItem(display_value)
-
-                    # Alignement : centré pour tout sauf les noms (client et logement)
-                    if col_idx == 2 or col_idx == 4:  # client_name et logement_name
+                    # Alignement : centré
+                    if col_idx == 3 or col_idx == 5:  #
                         item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-                    else:  # Tous les autres champs centrés
+                    else:  # ID, nom, prénom, téléphone, code postal, ville
                         item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-
                     self.tableWidget.setItem(row_idx, col_idx, item)
+            print(f"Chargé {len(self.events)} réservation(s)")  # Message de debug
 
             # Réactiver le tri après le remplissage
             self.tableWidget.setSortingEnabled(True)
 
             # Trier par ID (colonne 0) par défaut, ordre décroissant (plus récent en premier)
             self.tableWidget.sortItems(0, Qt.SortOrder.DescendingOrder)
-
-            print(f"Chargé {len(events)} réservation(s)")  # Message de debug
 
         except Exception as e:
             print(f"Erreur lors du chargement des réservations: {e}")

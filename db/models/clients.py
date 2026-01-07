@@ -20,7 +20,7 @@ class Client:
 
 
     @staticmethod
-    def delete(self, client_id):
+    def delete(client_id):
         """Supprime un client de la base de données."""
         db = connect_to_db()
         if db.isOpen() and isinstance(client_id, int):

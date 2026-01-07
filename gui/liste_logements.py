@@ -1,8 +1,9 @@
+from db.db_connection import connect_to_db
+from db.models.logements import Logement
+from gui.liste_logements_ui import Ui_ListLogementsForm
 from PySide6.QtWidgets import QWidget, QTableWidgetItem, QHeaderView, QMessageBox
 from PySide6.QtSql import QSqlQuery
 from PySide6.QtCore import Qt
-from gui.liste_logements_ui import Ui_ListLogementsForm
-from db.db_connection import connect_to_db
 
 
 class ListLogementsWindow(QWidget, Ui_ListLogementsForm):
@@ -10,11 +11,15 @@ class ListLogementsWindow(QWidget, Ui_ListLogementsForm):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.logement = None
         self.setupUi(self)
 
         # Connecter les boutons
         self.button_ok.clicked.connect(self.close)
         self.button_delete.clicked.connect(self.delete_selected_logement)
+
+        # Créer une instance de la classe Logement
+        self.logement = Logement()
 
         # Charger les données
         self.load_logements()
@@ -54,76 +59,46 @@ class ListLogementsWindow(QWidget, Ui_ListLogementsForm):
         )
 
         if reply == QMessageBox.StandardButton.Yes:
-            # Supprimer de la base de données
-            try:
-                db = connect_to_db()
-                query = QSqlQuery(db)
-                query.prepare("DELETE FROM logements WHERE id = ?")
-                query.addBindValue(int(logement_id))
 
-                if query.exec():
-                    # Supprimer la ligne du tableau
-                    self.tableWidget.removeRow(row)
-                    QMessageBox.information(
-                        self,
-                        "Suppression réussie",
-                        f"Le logement '{logement_nom}' a été supprimé avec succès."
-                    )
-                else:
-                    QMessageBox.critical(
-                        self,
-                        "Erreur de suppression",
-                        f"Erreur lors de la suppression : {query.lastError().text()}"
-                    )
+            try:
+                #Supprimer le logement via la méthode delete de la classe
+                self.logement.delete(int(logement_id))
+
+                # Supprimer la ligne du tableau
+                self.tableWidget.removeRow(row)
+                QMessageBox.information(
+                    self,
+                    "Suppression réussie",
+                    f"Le logement '{logement_nom}' a été supprimé avec succès."
+                )
             except Exception as e:
                 QMessageBox.critical(
                     self,
-                    "Erreur",
-                    f"Une erreur s'est produite : {str(e)}"
+                    "Erreur de suppression",
+                    f"Une erreur s'est produite lors de la suppression : {str(e)}"
                 )
 
     def load_logements(self):
         """Charge tous les logements depuis la base de données"""
         try:
-            # Connexion avec QSqlDatabase
-            db = connect_to_db()
+            # Charger tous les logements via la méthode load_all de la classe Logement
+            self.logements = Logement.load_all()
 
-            if not db.isOpen():
-                print("Erreur: La base de données n'est pas ouverte")
-                return
-
-            # Créer une requête SQL avec QSqlQuery
-            query = QSqlQuery(db)
-
-            # Préparer et exécuter la requête - tri par ID
-            query.prepare("""
-                          SELECT id, nom, adresse, code_postal, ville, capacite, classement
-                          FROM logements
-                          ORDER BY id
-                          """)
-
-            if not query.exec():
-                print(f"Erreur lors de l'exécution de la requête: {query.lastError().text()}")
+            if not self.logements:
+                print("Aucun logement trouvé.")
                 return
 
             # Désactiver le tri pendant le remplissage
             self.tableWidget.setSortingEnabled(False)
 
-            # Récupérer les résultats et remplir le tableau
-            logements = []
-            while query.next():
-                logement = []
-                for i in range(7):  # 7 colonnes
-                    value = query.value(i)
-                    logement.append(value)
-                logements.append(logement)
-
             # Configurer le tableau
-            self.tableWidget.setRowCount(len(logements))
+            self.tableWidget.setRowCount(len(self.logements))
 
             # Remplir le tableau avec alignement approprié
-            for row_idx, logement in enumerate(logements):
-                for col_idx, value in enumerate(logement):
+            for row_idx, logement in enumerate(self.logements):
+                for col_idx, value in enumerate(
+                        [logement.id, logement.nom, logement.adresse, logement.code_postal, logement.ville,
+                         logement.capacite, logement.classement]):
                     # Convertir None en chaîne vide
                     display_value = "" if value is None else str(value)
                     item = QTableWidgetItem(display_value)
@@ -135,6 +110,7 @@ class ListLogementsWindow(QWidget, Ui_ListLogementsForm):
                         item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
 
                     self.tableWidget.setItem(row_idx, col_idx, item)
+            print(f"Chargé {len(self.logements)} logement(s)")  # Message de debug
 
             # Réactiver le tri après le remplissage
             self.tableWidget.setSortingEnabled(True)
@@ -142,7 +118,6 @@ class ListLogementsWindow(QWidget, Ui_ListLogementsForm):
             # Trier par ID (colonne 0) par défaut
             self.tableWidget.sortItems(0, Qt.SortOrder.AscendingOrder)
 
-            print(f"Chargé {len(logements)} logement(s)")  # Message de debug
 
         except Exception as e:
             print(f"Erreur lors du chargement des logements: {e}")

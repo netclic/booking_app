@@ -16,15 +16,16 @@ class Logement:
         self.capacite = capacite
         self.classement = classement
 
-    def delete(self):
+    @staticmethod
+    def delete(logement_id):
         """Supprime un logement de la base de données."""
         db = connect_to_db()
-        if db.isOpen() and self.id:
+        if db.isOpen() and logement_id:
             query = QSqlQuery(db)
             query.prepare("DELETE FROM logements WHERE id = :id")
-            query.bindValue(":id", self.id)
+            query.bindValue(":id", logement_id)
             if query.exec():
-                print(f"Logement ID={self.id} supprimé avec succès.")
+                print(f"Logement ID={logement_id} supprimé avec succès.")
                 return True
             else:
                 print("Erreur lors de la suppression :", query.lastError().text())
